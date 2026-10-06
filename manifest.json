@@ -1,0 +1,17 @@
+{
+  "name": "Hostel Help Desk",
+  "short_name": "Hostel Help",
+  "description": "Student Hostel Complaint Management System",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1769e0",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
