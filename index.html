@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Hostel Help Desk</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f7ff;color:#172033}
+header{background:#1769e0;color:white;padding:20px;text-align:center}
+header h1{margin:0;font-size:28px}
+nav{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;background:white;padding:10px;box-shadow:0 2px 8px #bbb}
+nav button{border:0;background:#1769e0;color:white;padding:10px 15px;border-radius:8px}
+.container{max-width:900px;margin:25px auto;padding:15px}
+.card{background:white;padding:22px;margin-bottom:18px;border-radius:15px;box-shadow:0 3px 12px #ccd}
+input,select,textarea{width:100%;padding:12px;margin:7px 0 15px;border:1px solid #ccd;border-radius:8px}
+textarea{min-height:110px}
+button.primary{background:#1769e0;color:white;border:0;padding:13px 20px;border-radius:8px;font-size:16px}
+button.green{background:#159447;color:white;border:0;padding:10px;border-radius:8px}
+button.red{background:#d93025;color:white;border:0;padding:10px;border-radius:8px}
+.hidden{display:none}
+.status{padding:8px;border-radius:7px;background:#e8f1ff;margin:8px 0}
+.hero{text-align:center;padding:35px 10px}
+.hero h2{font-size:32px;color:#1769e0}
+.stat{display:inline-block;padding:15px;margin:5px;background:#eaf2ff;border-radius:10px;text-align:center}
+</style>
+</head>
+
+<body>
+<header>
+<h1>🏠 Hostel Help Desk</h1>
+<p>Student Complaint Management System</p>
+</header>
+
+<nav>
+<button onclick="show('home')">Home</button>
+<button onclick="show('report')">Report Problem</button>
+<button onclick="show('track')">Track Complaint</button>
+<button onclick="show('admin')">Admin</button>
+</nav>
+
+<div class="container">
+
+<section id="home">
+<div class="card hero">
+<h2>Welcome Students 👋</h2>
+<p>Report hostel problems easily and track their progress.</p>
+<button class="primary" onclick="show('report')">Report a Problem</button>
+</div>
+
+<div class="card">
+<h3>How it works</h3>
+<p>1️⃣ Student submits complaint</p>
+<p>2️⃣ Complaint goes to caretaker</p>
+<p>3️⃣ If not considered within the time limit, it escalates automatically</p>
+<p>4️⃣ Student can also directly approach higher authority</p>
+</div>
+</section>
+
+<section id="report" class="hidden">
+<div class="card">
+<h2>📝 Report a Hostel Problem</h2>
+
+<label>Student Name</label>
+<input id="name" placeholder="Enter your name">
+
+<label>Hostel / Block</label>
+<input id="hostel" placeholder="Example: Block A">
+
+<label>Room Number</label>
+<input id="room" placeholder="Example: 204">
+
+<label>Problem Category</label>
+<select id="category">
+<option>Water</option>
+<option>Electricity</option>
+<option>Food</option>
+<option>Wi-Fi</option>
+<option>Cleaning</option>
+<option>Maintenance</option>
+<option>Security</option>
+<option>Other</option>
+</select>
+
+<label>Problem Description</label>
+<textarea id="description" placeholder="Describe your problem"></textarea>
+
+<label>Urgency</label>
+<select id="urgency">
+<option>Normal</option>
+<option>Urgent</option>
+<option>Emergency</option>
+</select>
+
+<label>Complaint Route</label>
+<select id="route">
+<option value="caretaker">Caretaker First — 24 hour escalation</option>
+<option value="higher">Directly to Higher Authority</option>
+</select>
+
+<button class="
