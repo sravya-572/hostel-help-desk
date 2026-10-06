@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1769e0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Hostel Help Desk</title>
@@ -31,7 +33,11 @@ button.red{background:#d93025;color:white;border:0;padding:10px;border-radius:8p
 <h1>🏠 Hostel Help Desk</h1>
 <p>Student Complaint Management System</p>
 </header>
-
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js");
+}
+</script>
 <nav>
 <button onclick="show('home')">Home</button>
 <button onclick="show('report')">Report Problem</button>
