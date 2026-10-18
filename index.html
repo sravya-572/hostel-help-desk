@@ -313,26 +313,69 @@ async function register(){
     alert('Registration failed: '+e.message);
   }
 }
+ async function login(){
+  const loginValue = document.getElementById('lid').value.trim();
+  const pass = document.getElementById('lpass').value;
 
-async function login(){
-  const loginValue=document.getElementById('lid').value.trim();
-  const pass=document.getElementById('lpass').value;
-  if(!loginValue||!pass){alert('Enter your Student ID/email and password.');return;}
+  if(!loginValue || !pass){
+    alert('Enter your Student ID/email and password.');
+    return;
+  }
 
   try{
-    let email=loginValue;
+    let email = loginValue;
+
     if(!loginValue.includes('@')){
-      const u=await findUserByStudentId(loginValue);
-      if(!u){alert('Student ID not found.');return;}
-      email=u.email;
+      const u = await findUserByStudentId(loginValue);
+
+      if(!u){
+        alert('Student ID not found.');
+        return;
+      }
+
+      email = u.email;
     }
-    await signInWithEmailAndPassword(auth,email,pass);
+
+    const credential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      pass
+    );
+
+    currentUser = credential.user;
+
+    const profileSnap = await getDoc(
+      doc(db, 'users', currentUser.uid)
+    );
+
+    if(!profileSnap.exists()){
+      await signOut(auth);
+      currentUser = null;
+      currentProfile = null;
+      alert('Your user profile was not found in Firestore.');
+      return;
+    }
+
+    currentProfile = {
+      id: profileSnap.id,
+      ...profileSnap.data()
+    };
+
+    if(currentProfile.role !== 'student'){
+      await signOut(auth);
+      currentUser = null;
+      currentProfile = null;
+      alert('Please use a student account to log in here.');
+      return;
+    }
+
     alert('Login successful!');
     show('report');
+
   }catch(e){
-    alert('Invalid login. Check your email/Student ID and password.');
+    alert('Login failed: ' + e.message);
   }
-}
+ }
 
 async function adminLogin(){
   const email=document.getElementById('aid').value.trim();
