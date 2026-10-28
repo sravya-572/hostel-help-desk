@@ -408,15 +408,19 @@ async function submitComplaint() {
     "\ncurrentProfile: " + !!currentProfile +
     "\nrole: " + (currentProfile?.role ?? "MISSING")
   );
-
-  if (
-    !currentUser ||
-    !currentProfile ||
-    currentProfile.role !== 'student'
-  ) {
-    alert("Please login as a student first.");
-    return;
-  }
+ if (
+  !currentUser ||
+  !currentProfile ||
+  currentProfile.role !== 'student'
+) {
+  alert(
+    "Login check failed!" +
+    "\nUser: " + !!currentUser +
+    "\nProfile: " + !!currentProfile +
+    "\nRole: [" + currentProfile?.role + "]"
+  );
+  return;
+ }
 
   // Keep the rest of your existing function unchanged.
  
