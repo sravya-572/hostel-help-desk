@@ -365,7 +365,8 @@ async function register(){
   '\nProfile data: ' + JSON.stringify(profileSnap.data())
 );
 alert('Role read from Firestore: [' + currentProfile.role + ']');
-if(currentProfile.role !== 'student'){
+ const userRole = String(currentProfile.role || '').trim().toLowerCase();
+if(userRole !== 'student'){
       await signOut(auth);
       currentUser = null;
       currentProfile = null;
