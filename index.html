@@ -402,12 +402,6 @@ async function adminLogin(){
 }
 
 async function submitComplaint() {
-  alert(
-    "DEBUG CHECK" +
-    "\ncurrentUser: " + !!currentUser +
-    "\ncurrentProfile: " + !!currentProfile +
-    "\nrole: " + (currentProfile?.role ?? "MISSING")
-  );
   if (
   !currentUser ||
   !currentProfile ||
