@@ -454,7 +454,7 @@ async function submitComplaint() {
       photo:'',
       route:direct?'Direct to Higher Authority':'Caretaker First',
       urgency:urgencyChoice,
-      caretakerUid:direct?'':(direct?'':staff.id),
+     caretakerUid: direct ? '' : staff.id,
       authorityUid:direct?staff.id:'',
       assignedToUid:staff.id,
       assignedRole:direct?'authority':'caretaker',
