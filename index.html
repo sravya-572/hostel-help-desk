@@ -372,10 +372,9 @@ if(currentProfile.role !== 'student'){
       alert('Please use a student account to log in here.');
       return;
     }
-
-    alert('Login successful!');
-    show('report');
-
+alert('TEST: Student login successful!');
+alert('TEST: Opening report page now.');
+show('report');
   }catch(e){
     alert('Login failed: ' + e.message);
   }
