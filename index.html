@@ -401,11 +401,25 @@ async function adminLogin(){
   }
 }
 
-async function submitComplaint(){
-  if(!currentUser || !currentProfile || currentProfile.role!=='student'){
-    alert('Please login as a student first.'); show('login'); return;
+async function submitComplaint() {
+  alert(
+    "DEBUG CHECK" +
+    "\ncurrentUser: " + !!currentUser +
+    "\ncurrentProfile: " + !!currentProfile +
+    "\nrole: " + (currentProfile?.role ?? "MISSING")
+  );
+
+  if (
+    !currentUser ||
+    !currentProfile ||
+    currentProfile.role !== 'student'
+  ) {
+    alert("Please login as a student first.");
+    return;
   }
 
+  // Keep the rest of your existing function unchanged.
+ 
   const category=document.getElementById('category').value;
   const hostel=document.getElementById('hostel').value;
   const room=document.getElementById('room').value.trim();
