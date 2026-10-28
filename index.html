@@ -408,10 +408,10 @@ async function submitComplaint() {
     "\ncurrentProfile: " + !!currentProfile +
     "\nrole: " + (currentProfile?.role ?? "MISSING")
   );
- if (
+  if (
   !currentUser ||
   !currentProfile ||
-  currentProfile.role !== 'student'
+  String(currentProfile?.role || '').trim().toLowerCase() !== 'student'
 ) {
   alert(
     "Login check failed!" +
