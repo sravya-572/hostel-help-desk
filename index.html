@@ -274,35 +274,30 @@ async function findUserByStudentId(studentId){
   const snap=await getDocs(q);
   return snap.empty ? null : {id:snap.docs[0].id,...snap.docs[0].data()};
 }
-
 async function findFirstStaff(role){
   try {
-    const q=query(collection(db,'users'),where('role','==',role),where('active','==',true));
-    const snap=await getDocs(q);
-    alert(
-      'STAFF LOOKUP DIAGNOSTIC' +
-      '\nFirebase project: ' + firebaseConfig.projectId +
-      '\nCollection: users' +
-      '\nRole requested: [' + role + ']' +
-      '\nMatching documents: ' + snap.size
-    );
-    if(snap.empty) return null;
-    const staffDoc=snap.docs[0];
-    const staffData=staffDoc.data();
-    alert(
-      'STAFF PROFILE FOUND' +
-      '\nDocument ID: ' + staffDoc.id +
-      '\nRole: [' + staffData.role + ']' +
-      '\nActive: [' + staffData.active + ']' +
-      '\nActive field type: ' + typeof staffData.active
-    );
-    return {id:staffDoc.id,...staffData};
+    const snap = await getDocs(collection(db,'users'));
+
+    let details = 'Total user documents: ' + snap.size;
+
+    snap.forEach((d,i) => {
+      const data = d.data();
+
+      details +=
+        '\nUser ' + (i+1) +
+        '\nRole: [' + data.role + ']' +
+        '\nActive: [' + data.active + ']' +
+        '\nActive type: ' + typeof data.active;
+    });
+
+    alert(details);
+    return null;
+
   } catch(e) {
-    alert('STAFF LOOKUP ERROR' + '\nCode: ' + (e.code || 'unknown') + '\nMessage: ' + e.message);
+    alert('ERROR: ' + e.code + '\n' + e.message);
     throw e;
   }
-}
-
+ }
 async function register(){
   const name=document.getElementById('rname').value.trim();
   const studentId=document.getElementById('rid').value.trim();
