@@ -402,26 +402,55 @@ show('report');
     alert('Login failed: ' + e.message);
   }
  }
+ async function adminLogin(){
+  const email = document.getElementById('aid').value.trim();
+  const pass = document.getElementById('apass').value;
 
-async function adminLogin(){
-  const email=document.getElementById('aid').value.trim();
-  const pass=document.getElementById('apass').value;
-  if(!email||!pass){alert('Enter staff/admin email and password.');return;}
+  if(!email || !pass){
+    alert('Enter staff/admin email and password.');
+    return;
+  }
 
   try{
-    await signInWithEmailAndPassword(auth,email,pass);
-    if(!currentProfile || !['admin','caretaker','authority'].includes(currentProfile.role)){
-      await signOut(auth);
-      alert('This account is not authorized as staff/admin.');
+    const credential = await signInWithEmailAndPassword(
+      auth, email, pass
+    );
+
+    const profileSnap = await getDoc(
+      doc(db, 'users', credential.user.uid)
+    );
+
+    if(!profileSnap.exists()){
+      alert('Staff profile not found in Firestore.');
       return;
     }
-    document.getElementById('adminLoginBox').classList.add('hidden');
-    document.getElementById('adminPanel').classList.remove('hidden');
-    loadAdmin();
+
+    currentUser = credential.user;
+    currentProfile = {
+      id: profileSnap.id,
+      ...profileSnap.data()
+    };
+
+    const role = String(currentProfile.role || '')
+      .trim().toLowerCase();
+
+    if(!['admin','caretaker','authority'].includes(role)){
+      alert('This account is not authorized as staff.');
+      return;
+    }
+
+    document.getElementById('adminLoginBox')
+      .classList.add('hidden');
+
+    document.getElementById('adminPanel')
+      .classList.remove('hidden');
+
+    await loadAdmin();
+
   }catch(e){
-    alert('Invalid staff/admin login.');
+    alert('Staff login failed: ' + e.message);
   }
-}
+ }
 
 async function submitComplaint() {
   if (
