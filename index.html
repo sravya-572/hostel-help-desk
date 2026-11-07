@@ -242,7 +242,7 @@ const db = getFirestore(app);
 
 let routeChoice='care', urgencyChoice='Normal';
 let currentUser=null, currentProfile=null;
-
+const CARETAKER_UID = 'Ob40zA8KItPLSAhdQMSjQYh45o72';
 function show(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -475,16 +475,23 @@ async function submitComplaint() {
   }
 
   try{
-    const direct=routeChoice==='direct';
-    const staff=await findFirstStaff(direct?'authority':'caretaker');
+    
+const direct = routeChoice === 'direct';
+let staff;
 
-    if(!staff){
-      alert(direct
-        ? 'No authorized higher authority account is available yet.'
-        : 'No authorized caretaker account is available yet.');
-      return;
-    }
+if (direct) {
+  staff = await findFirstStaff('authority');
 
+  if (!staff) {
+    alert('No authorized higher authority account is available yet.');
+    return;
+  }
+} else {
+  staff = {
+    id: CARETAKER_UID,
+    name: 'Caretaker'
+  };
+}
     const id=generateId();
     const now=Date.now();
 
