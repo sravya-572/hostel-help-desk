@@ -416,7 +416,7 @@ async function adminLogin() {
 
     const profile = profileSnap.data();
     const role = String(profile.role || '').trim().toLowerCase();
-
+alert('Role received from Firebase: [' + role + ']');
     if (!['admin', 'caretaker', 'authority'].includes(role)) {
       await signOut(auth);
       alert('This account is not authorized as staff.');
