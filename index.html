@@ -389,27 +389,61 @@ async function register(){
     alert('Login failed: '+e.message);
   }
 }
+async function adminLogin() {
+  const email = document.getElementById('aid').value.trim();
+  const pass = document.getElementById('apass').value;
 
-async function adminLogin(){
-  const email=document.getElementById('aid').value.trim();
-  const pass=document.getElementById('apass').value;
-  if(!email||!pass){alert('Enter staff/admin email and password.');return;}
+  if (!email || !pass) {
+    alert('Enter staff email and password.');
+    return;
+  }
 
-  try{
-    await signInWithEmailAndPassword(auth,email,pass);
-    if(!currentProfile || !['admin','caretaker','authority'].includes(currentProfile.role)){
+  try {
+    const credential = await signInWithEmailAndPassword(
+      auth, email, pass
+    );
+
+    // Load staff profile directly from Firestore
+    const profileSnap = await getDoc(
+      doc(db, 'users', credential.user.uid)
+    );
+
+    if (!profileSnap.exists()) {
       await signOut(auth);
-      alert('This account is not authorized as staff/admin.');
+      alert('Staff profile not found in Firestore.');
       return;
     }
-    document.getElementById('adminLoginBox').classList.add('hidden');
-    document.getElementById('adminPanel').classList.remove('hidden');
-    loadAdmin();
-  }catch(e){
-    alert('Invalid staff/admin login.');
-  }
-}
 
+    const profile = profileSnap.data();
+    const role = String(profile.role || '').trim().toLowerCase();
+
+    if (!['admin', 'caretaker', 'authority'].includes(role)) {
+      await signOut(auth);
+      alert('This account is not authorized as staff.');
+      return;
+    }
+
+    currentUser = credential.user;
+    currentProfile = {
+      id: profileSnap.id,
+      ...profile
+    };
+
+    document.getElementById('adminLoginBox')
+      .classList.add('hidden');
+
+    document.getElementById('adminPanel')
+      .classList.remove('hidden');
+
+    await loadAdmin();
+
+    alert('Login successful!');
+
+  } catch (e) {
+    alert('Login failed: ' + e.message);
+  }
+         
+}
 async function submitComplaint() {
   if (
   !currentUser ||
